@@ -6,14 +6,21 @@
  */
 
 import React from 'react';
-import {Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import BigList from './components/BigList';
 
 function App(): JSX.Element {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{color: 'black'}}>Hello world</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <BigList />
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default App;
