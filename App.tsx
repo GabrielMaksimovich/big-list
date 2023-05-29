@@ -6,21 +6,15 @@
  */
 
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
 import BigList from './components/BigList';
+import {Block} from './components/SimpleComponents/Block';
 
 function App(): JSX.Element {
   return (
-    <SafeAreaView style={styles.container}>
+    <Block flex={1}>
       <BigList />
-    </SafeAreaView>
+    </Block>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;

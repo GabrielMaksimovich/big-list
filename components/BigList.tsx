@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text} from 'react-native';
 import BigList, {BigListRenderItemInfo} from 'react-native-big-list';
 import axios from 'axios';
+import {Block} from './SimpleComponents/Block';
+import {Image} from './SimpleComponents/Image';
 
 interface Photo {
   albumId: number;
@@ -17,22 +19,25 @@ const renderItem = (info: BigListRenderItemInfo<any>) => {
     <View style={style}>
       <Image
         source={{uri: info.item.thumbnailUrl}}
-        style={{width: '100%', height: '100%'}}
+        width={'100%'}
+        height={'100%'}
+        onLoad={() => console.log('Image loaded')}
+        onError={() => console.log('Error, image has problem with loading')}
       />
     </View>
   );
 };
 
 const renderHeader = () => (
-  <View style={{height: 90}}>
+  <Block height={'80px'}>
     <Text>This is the header</Text>
-  </View>
+  </Block>
 );
 
 const renderFooter = () => (
-  <View style={{height: 100}}>
+  <Block height={'80px'}>
     <Text>This is the footer</Text>
-  </View>
+  </Block>
 );
 
 const BigListComponent = () => {
@@ -56,7 +61,7 @@ const BigListComponent = () => {
       renderItem={renderItem}
       renderHeader={renderHeader}
       renderFooter={renderFooter}
-      itemHeight={100}
+      itemHeight={70}
     />
   );
 };
