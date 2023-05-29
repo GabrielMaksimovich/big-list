@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
 import BigList, {BigListRenderItemInfo} from 'react-native-big-list';
 import axios from 'axios';
 import {Block} from './SimpleComponents/Block';
 import {Image} from './SimpleComponents/Image';
+import {Text} from './SimpleComponents/Text';
 
 interface Photo {
   albumId: number;
@@ -16,21 +16,22 @@ interface Photo {
 const renderItem = (info: BigListRenderItemInfo<any>) => {
   const style = Array.isArray(info.style) ? info.style[0] : info.style;
   return (
-    <View style={style}>
+    <Block style={style}>
       <Image
+        width={'200%'}
+        height={'50%'}
+        resizeMode={'cover'}
         source={{uri: info.item.thumbnailUrl}}
-        width={'100%'}
-        height={'100%'}
         onLoad={() => console.log('Image loaded')}
         onError={() => console.log('Error, image has problem with loading')}
       />
-    </View>
+    </Block>
   );
 };
 
 const renderHeader = () => (
   <Block height={'80px'}>
-    <Text>This is the header</Text>
+    <Text color={'black'}>This is the header</Text>
   </Block>
 );
 
@@ -40,7 +41,7 @@ const renderFooter = () => (
   </Block>
 );
 
-const BigListComponent = () => {
+const BigListComponent = React.memo(() => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -56,14 +57,16 @@ const BigListComponent = () => {
   }, []);
 
   return (
-    <BigList
-      data={data}
-      renderItem={renderItem}
-      renderHeader={renderHeader}
-      renderFooter={renderFooter}
-      itemHeight={70}
-    />
+    <Block flex={1} justifyContent={'center'} alignItems={'center'}>
+      <BigList
+        data={data}
+        renderItem={renderItem}
+        renderHeader={renderHeader}
+        renderFooter={renderFooter}
+        itemHeight={70}
+      />
+    </Block>
   );
-};
+});
 
 export default BigListComponent;

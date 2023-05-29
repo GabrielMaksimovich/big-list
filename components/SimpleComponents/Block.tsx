@@ -4,9 +4,11 @@ import {PaddingProps} from '../../types/PaddingProps';
 import {PaddingStyle} from '../../styles/PaddingStyle';
 import {MarginProps} from '../../types/MarginProps';
 import {MarginStyle} from '../../styles/MarginStyle';
+import {ViewStyle} from 'react-native';
 
 export type BlockInterface = PaddingProps &
   MarginProps & {
+    style?: ViewStyle;
     active?: boolean;
     width?: string;
     height?: string;
@@ -112,6 +114,8 @@ const StyledBlock = styled.View<BlockInterface>`
   ${MarginStyle};
 `;
 
-export const Block: FC<BlockInterface> = ({children, ...rest}) => (
-  <StyledBlock {...rest}>{children}</StyledBlock>
+export const Block: FC<BlockInterface> = ({children, style, ...rest}) => (
+  <StyledBlock style={style} {...rest}>
+    {children}
+  </StyledBlock>
 );
