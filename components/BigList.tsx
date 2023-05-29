@@ -1,40 +1,72 @@
-import React from 'react';
-import {View, Text } from 'react-native';
+import React, {useEffect, useState} from 'react';
 import BigList, {BigListRenderItemInfo} from 'react-native-big-list';
+import axios from 'axios';
+import {Block} from './SimpleComponents/Block';
+import {Image} from './SimpleComponents/Image';
+import {Text} from './SimpleComponents/Text';
 
-const data = Array.from({length: 10000}, (_, i) => `Item ${i}`);
+interface Photo {
+  albumId: number;
+  id: number;
+  title: string;
+  url: string;
+  thumbnailUrl: string;
+}
 
-const renderItem = (info: BigListRenderItemInfo<string>) => {
+const renderItem = (info: BigListRenderItemInfo<any>) => {
   const style = Array.isArray(info.style) ? info.style[0] : info.style;
   return (
-    <View style={style}>
-      <Text>{info.item}</Text>
-    </View>
+    <Block style={style}>
+      <Image
+        width={'200%'}
+        height={'50%'}
+        resizeMode={'cover'}
+        source={{uri: info.item.thumbnailUrl}}
+        onLoad={() => console.log('Image loaded')}
+        onError={() => console.log('Error, image has problem with loading')}
+      />
+    </Block>
   );
 };
 
 const renderHeader = () => (
-  <View style={{height: 90}}>
-    <Text>This is the header</Text>
-  </View>
+  <Block height={'80px'}>
+    <Text color={'black'}>This is the header</Text>
+  </Block>
 );
 
 const renderFooter = () => (
-  <View style={{height: 100}}>
+  <Block height={'80px'}>
     <Text>This is the footer</Text>
-  </View>
+  </Block>
 );
 
-const BigListComponent = () => {
+const BigListComponent = React.memo(() => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('https://jsonplaceholder.typicode.com/photos')
+      .then(response => {
+        const validData = response.data.filter(
+          (item: Photo) => item.thumbnailUrl != null,
+        );
+        setData(validData);
+      })
+      .catch(error => console.error(error));
+  }, []);
+
   return (
-    <BigList
-      data={data}
-      renderItem={renderItem}
-      renderHeader={renderHeader}
-      renderFooter={renderFooter}
-      itemHeight={50}
-    />
+    <Block flex={1} justifyContent={'center'} alignItems={'center'}>
+      <BigList
+        data={data}
+        renderItem={renderItem}
+        renderHeader={renderHeader}
+        renderFooter={renderFooter}
+        itemHeight={70}
+      />
+    </Block>
   );
-};
+});
 
 export default BigListComponent;
